@@ -7,7 +7,12 @@ Feature: Build a game
   Scenario: Make a box
     Given I create a rectangle
 	Then I should have a file named "rectangle.gif"
-  
+	
+  @draw
+  Scenario: Make a line
+    Given I create a line
+	Then I should have a file named "line.gif"
+	
   Scenario: Add a player
     Given I have a player named "Sarah"
 	And I have a player named "Larry"

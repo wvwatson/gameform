@@ -6,7 +6,7 @@ class NormalForm
   # 
   # # make a rectangle with white fill on skyblue background
   # convert -size 100x60 xc:skyblue -fill white -stroke black -draw "rectangle 20,10, 80,50" draw_rect.gif
-  def draw_game (location=__FILE__+ "/../../examples/")
+  def draw_rectangle (location=__FILE__+ "/../../examples/")
     canvas = Magick::Image.new(240, 300,
                   Magick::HatchFill.new('white','lightcyan2'))
     
@@ -20,7 +20,18 @@ class NormalForm
   # 
   # # draw a line
   # convert -size 100x60 xc:skyblue -fill white -stroke black -draw "line   20,50 90,10" draw_line.gif
-  
+  def draw_line(location=__FILE__+ "/../../examples/")
+		canvas = Magick::Image.new(240, 300,
+								Magick::HatchFill.new('white','lightcyan2'))
+	
+    myline = Magick::Draw.new
+		myline.fill('white')
+    myline.stroke('black')
+    myline.line 20, 50, 90,10
+    myline.draw(canvas)
+    canvas.write(location + 'line.gif')
+	
+	end
   def lolcat
 
     img = ImageList.new('public/computer-cat.jpg')

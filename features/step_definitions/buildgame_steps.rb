@@ -22,10 +22,14 @@ Given /^I want a game form$/ do
 end
 
 When /^I create a rectangle$/ do
-  @normalform.draw_game
+  @normalform.draw_rectangle
 end
 
 Then /^I should have a file named "([^"]*)"$/ do |arg1|
   output_path = File.dirname(__FILE__) + "/../../examples/" + arg1
   File.exists?(output_path).should == true
+end
+
+Given /^I create a line$/ do
+  @normalform.draw_line
 end
