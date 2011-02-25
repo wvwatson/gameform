@@ -3,9 +3,9 @@ Feature: Build a game
   As a wishful thinker
   I want to create a two-person game
 
+  @draw
   Scenario: Make a box
-    Given I want a game form
-    When I create a rectangle
+    Given I create a rectangle
 	Then I should have a file named "rectangle.gif"
   
   Scenario: Add a player

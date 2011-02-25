@@ -5,17 +5,16 @@ class NormalForm
   # convert -size 100x60 xc:skyblue -fill white -stroke black -font Candice -pointsize 40 -gravity center -draw "text 0,0 'Hello'"  draw_text.gif
   # 
   # # make a rectangle with white fill on skyblue background
-  # convert -size 100x60 xc:skyblue -fill white -stroke black -draw "rectangle 20,10 80,50" draw_rect.gif
-  def draw_game
+  # convert -size 100x60 xc:skyblue -fill white -stroke black -draw "rectangle 20,10, 80,50" draw_rect.gif
+  def draw_game (location=__FILE__+ "/../../examples/")
     canvas = Magick::Image.new(240, 300,
                   Magick::HatchFill.new('white','lightcyan2'))
     
-    rectangle = Magick::Draw.new
-    rectangle.stroke('black')
-    rectangle.rectangle (20,10, 80,50)
-    rectangle.draw(canvas)
-    canvas.write('rectangle.gif')
-    
+    myrectangle = Magick::Draw.new
+    myrectangle.stroke('black')
+    myrectangle.rectangle 20, 10, 80, 50
+    myrectangle.draw(canvas)
+    canvas.write(location + 'rectangle.gif')
     
   end
   # 
