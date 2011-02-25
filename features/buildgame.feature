@@ -2,6 +2,11 @@ Feature: Build a game
   In order to model human behavior
   As a wishful thinker
   I want to create a two-person game
+
+  Scenario: Make a box
+    Given I want a game form
+    When I create a rectangle
+	Then I should have a file named "rectangle.gif"
   
   Scenario: Add a player
     Given I have a player named "Sarah"
