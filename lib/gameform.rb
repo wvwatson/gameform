@@ -11,6 +11,7 @@ class NormalForm
                   Magick::HatchFill.new('white','lightcyan2'))
     
     myrectangle = Magick::Draw.new
+		myrectangle.fill('white')
     myrectangle.stroke('black')
     myrectangle.rectangle 20, 10, 80, 50
     myrectangle.draw(canvas)
@@ -32,6 +33,8 @@ class NormalForm
     canvas.write(location + 'line.gif')
 	
 	end
+	
+	
   def lolcat
 
     img = ImageList.new('public/computer-cat.jpg')
