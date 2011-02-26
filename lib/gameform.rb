@@ -74,6 +74,15 @@ class NormalForm
       rectangle_coordinates[:second_horizontal])/2
     vertical_line[:second_vertical]=rectangle_coordinates[:second_vertical]
     vertical_line[:second_horizontal]=vertical_line[:first_horizontal]
+    
+    horizontal_line={}
+    horizontal_line[:first_vertical]=(rectangle_coordinates[:first_vertical]+
+      rectangle_coordinates[:second_vertical])/2
+    
+    horizontal_line[:first_horizontal] = rectangle_coordinates[:first_horizontal]
+    horizontal_line[:second_vertical]=horizontal_line[:first_vertical]
+    horizontal_line[:second_horizontal]=rectangle_coordinates[:second_horizontal]
+    
       
     canvas = Magick::Image.new(canvas_coordinates[:width], 
                               canvas_coordinates[:height],
@@ -90,7 +99,10 @@ class NormalForm
                       vertical_line[:first_vertical], 
                       vertical_line[:second_horizontal], 
                       vertical_line[:second_vertical]                      
-    
+    myfoursquare.line horizontal_line[:first_horizontal], 
+                      horizontal_line[:first_vertical], 
+                      horizontal_line[:second_horizontal], 
+                      horizontal_line[:second_vertical] 
     myfoursquare.draw(canvas)
     canvas.write(location + 'foursquares.gif')
     
