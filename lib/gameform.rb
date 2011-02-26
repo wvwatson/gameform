@@ -103,7 +103,7 @@ class NormalForm
                       horizontal_line[:first_vertical], 
                       horizontal_line[:second_horizontal], 
                       horizontal_line[:second_vertical] 
-    myfoursquare.draw(canvas)
+    myfoursquare.draw(canvas) 
     canvas.write(location + 'foursquares.gif')
     
     #     canvas = Magick::Image.new(240, 300,
