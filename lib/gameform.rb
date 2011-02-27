@@ -158,13 +158,19 @@ class NormalForm
                            horizontal_line[:second_horizontal], 
                            horizontal_line[:second_vertical] 
     # myfoursquare.annotate canvas, 100, 100, 20, 50, "Football"
+  
+    text_coordinates = {}  
+    text_coordinates[:pointsize] = 15
+    text_coordinates[:text_vertical] = 90
+    text_coordinates[:text_horizontal] = 20
     
     text = Magick::Draw.new
     text.font_family = 'tohama'
-    text.pointsize = 15
+    text.pointsize = text_coordinates[:pointsize]
     # text.gravity = Magick::CenterGravity
     
-    text.annotate(canvas, 0,0,90,20, "Football") {
+    text.annotate(canvas, 0,0,text_coordinates[:text_vertical],
+                          text_coordinates[:text_horizontal], "Football") {
        self.fill = 'gray40'
        self.rotation = 45
     }
