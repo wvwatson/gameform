@@ -42,3 +42,6 @@ Given /^I create rectangle and place (\d+) intersecting lines on it$/ do |arg1|
   @normalform.draw_foursquare
 end
 
+Given /^I create a game with annotations on it$/ do
+  @normalform.draw_annotated_game
+end

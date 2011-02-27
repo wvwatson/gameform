@@ -106,15 +106,86 @@ class NormalForm
     myfoursquare.draw(canvas) 
     canvas.write(location + 'foursquares.gif')
     
-    #     canvas = Magick::Image.new(240, 300,
-    #             Magick::HatchFill.new('white','lightcyan2'))
-    #   
-    #     myline = Magick::Draw.new
-    # myline.fill('white')
-    #     myline.stroke('black')
-    #     myline.line 20, 50, 90,10
-    #     myline.draw(canvas)
-    #     canvas.write(location + 'line.gif')
+  end
+ 
+  def draw_annotated_game(location=File.dirname(__FILE__) + "/../examples/")
+    
+    canvas_coordinates={}
+    canvas_coordinates[:width]=240
+    canvas_coordinates[:height]=300
+    
+    rectangle_coordinates={}
+    rectangle_coordinates[:first_horizontal]=20
+    rectangle_coordinates[:first_vertical]=10
+    rectangle_coordinates[:second_horizontal]=80
+    rectangle_coordinates[:second_vertical]=50
+    
+    vertical_line={}
+    vertical_line[:first_vertical]=rectangle_coordinates[:first_vertical]
+    vertical_line[:first_horizontal] = (rectangle_coordinates[:first_horizontal]+
+      rectangle_coordinates[:second_horizontal])/2
+    vertical_line[:second_vertical]=rectangle_coordinates[:second_vertical]
+    vertical_line[:second_horizontal]=vertical_line[:first_horizontal]
+    
+    horizontal_line={}
+    horizontal_line[:first_vertical]=(rectangle_coordinates[:first_vertical]+
+      rectangle_coordinates[:second_vertical])/2
+    
+    horizontal_line[:first_horizontal] = rectangle_coordinates[:first_horizontal]
+    horizontal_line[:second_vertical]=horizontal_line[:first_vertical]
+    horizontal_line[:second_horizontal]=rectangle_coordinates[:second_horizontal]
+    
+      
+    canvas = Magick::Image.new(canvas_coordinates[:width], 
+                              canvas_coordinates[:height],
+                              Magick::HatchFill.new('white','lightcyan2'))
+    
+    myfoursquare = Magick::Draw.new
+  	myfoursquare.fill('white')
+    myfoursquare.stroke('black')
+    myfoursquare.rectangle rectangle_coordinates[:first_horizontal], 
+                           rectangle_coordinates[:first_vertical], 
+                           rectangle_coordinates[:second_horizontal], 
+                           rectangle_coordinates[:second_vertical]
+    myfoursquare.line vertical_line[:first_horizontal], 
+                      vertical_line[:first_vertical], 
+                      vertical_line[:second_horizontal], 
+                      vertical_line[:second_vertical]                      
+    myfoursquare.line horizontal_line[:first_horizontal], 
+                           horizontal_line[:first_vertical], 
+                           horizontal_line[:second_horizontal], 
+                           horizontal_line[:second_vertical] 
+    # myfoursquare.annotate canvas, 100, 100, 20, 50, "Football"
+    
+    text = Magick::Draw.new
+    text.font_family = 'helvetica'
+    text.pointsize = 25
+    text.gravity = Magick::CenterGravity
+    
+    text.annotate(canvas, 0,0,2,2, "Football") {
+       self.fill = 'gray83'
+       self.rotation = 45
+    }
+    
+    
+    
+    myfoursquare.draw(canvas)  
+    canvas.write(location + 'annotatedgame.gif')    
+      #   
+      #     canvas = Magick::Image.new(300, 50) do
+      #         self.background_color = 'none'
+      #     end
+      #   
+      #     myannotation = Magick::Draw.new
+      # myannotation.fill('black')
+      #     myannotation.stroke('black')
+      #     myannotation.font "Arial"
+      #     myannotation.pointsize 25
+      #     myannotation.gravity Magick::CenterGravity
+      #     myannotation.text 0, 0, 'Hello'
+      #     myannotation.draw(canvas)
+      #     canvas.rotate!(45)
+      #     canvas.write(location + 'annotation.gif')
     
   end
   def lolcat

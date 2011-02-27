@@ -22,7 +22,12 @@ Feature: Build a game
   Scenario: Make a rectangle with four squares
     Given I create rectangle and place 2 intersecting lines on it
 	Then I should have a file named "foursquares.gif"
-	
+
+  @draw
+  Scenario: Make a game with annotations
+    Given I create a game with annotations on it
+	Then I should have a file named "annotatedgame.gif"
+		
   Scenario: Add a player
     Given I have a player named "Sarah"
 	And I have a player named "Larry"
