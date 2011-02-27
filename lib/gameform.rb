@@ -114,11 +114,13 @@ class NormalForm
     canvas_coordinates[:width]=240
     canvas_coordinates[:height]=300
     
+    topleft_adjustment = 50
+    bottomright_adjustment = 140
     rectangle_coordinates={}
-    rectangle_coordinates[:first_horizontal]=20
-    rectangle_coordinates[:first_vertical]=10
-    rectangle_coordinates[:second_horizontal]=80
-    rectangle_coordinates[:second_vertical]=50
+    rectangle_coordinates[:first_horizontal]=20 + topleft_adjustment
+    rectangle_coordinates[:first_vertical]=10 + topleft_adjustment
+    rectangle_coordinates[:second_horizontal]=80 + bottomright_adjustment
+    rectangle_coordinates[:second_vertical]=50 + bottomright_adjustment
     
     vertical_line={}
     vertical_line[:first_vertical]=rectangle_coordinates[:first_vertical]
@@ -158,12 +160,12 @@ class NormalForm
     # myfoursquare.annotate canvas, 100, 100, 20, 50, "Football"
     
     text = Magick::Draw.new
-    text.font_family = 'helvetica'
-    text.pointsize = 25
-    text.gravity = Magick::CenterGravity
+    text.font_family = 'tohama'
+    text.pointsize = 15
+    # text.gravity = Magick::CenterGravity
     
-    text.annotate(canvas, 0,0,2,2, "Football") {
-       self.fill = 'gray83'
+    text.annotate(canvas, 0,0,90,20, "Football") {
+       self.fill = 'gray40'
        self.rotation = 45
     }
     
