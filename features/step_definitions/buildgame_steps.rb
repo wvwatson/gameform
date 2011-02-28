@@ -33,3 +33,16 @@ end
 Given /^I create a line$/ do
   @normalform.draw_line
 end
+
+Given /^I create an annotation$/ do
+  @normalform.draw_annotation
+end
+
+Given /^I create rectangle and place (\d+) intersecting lines on it$/ do |arg1|
+  @normalform.draw_foursquare
+end
+
+Given /^I create a game with annotations on it$/ do
+  # @normalform.some_method "26", first_x: 20, first_y: 10, second_x: 80, second_y: 50
+  @normalform.draw_annotated_game
+end
