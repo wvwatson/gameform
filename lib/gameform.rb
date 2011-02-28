@@ -83,6 +83,31 @@ class NormalForm
     canvas.write(location + 'annotation.gif')
   end
 
+  # perl example
+  # $label=Image::Magick->new(size=>"600x600");
+  # $label->Read("label:testing");
+  # $label->Write("test.png");
+	def draw_label(location=File.dirname(__FILE__) + "/../examples/")
+    # canvas = Magick::Image.new(240, 300,
+    #                 Magick::HatchFill.new('white','lightcyan2'))
+    
+	  canvas = Magick::Image.new(90, 20) do
+        self.background_color = 'white' # change this to none later
+    end
+  
+    mylabel = Magick::Draw.new
+		mylabel.fill('grey')
+    mylabel.stroke('black')
+    mylabel.font "Courier"
+    mylabel.pointsize 15
+    mylabel.gravity Magick::EastGravity
+    # debugger
+    mylabel.text 0,0, 'Football'
+    mylabel.draw(canvas)
+    # canvas.rotate!(45)
+    canvas.write(location + 'label.gif')
+  end
+
   def draw_foursquare(location=File.dirname(__FILE__) + "/../examples/")
     
     canvas_coordinates={}
@@ -242,7 +267,11 @@ class NormalForm
     text.pointsize = 15
     # text.pointsize = text_coordinates[:pointsize]
     # text.gravity = Magick::CenterGravity
-    
+    # maybe try to do a fixed length and height of the text (geometry?) and
+    # then right-justify with gravity.
+    # I guess annotate is supposed to have height/width as well ...
+    # looks like I'm supposed to use a label, size it, have it 'best fit',
+    # then compose that labels canvas onto images canvas I want
     text.annotate(canvas, 0,0,text_coordinates[:text_horizontal],
                             text_coordinates[:text_vertical],
                              strategy_label
