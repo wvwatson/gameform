@@ -17,7 +17,12 @@ Feature: Build a game
   Scenario: Make an annotation
     Given I create an annotation
 	Then I should have a file named "annotation.gif"
-	
+
+  @draw
+  Scenario: Make an label
+    Given I create an label 
+	Then I should have a file named "label.gif"
+
   @draw
   Scenario: Make a rectangle with four squares
     Given I create rectangle and place 2 intersecting lines on it

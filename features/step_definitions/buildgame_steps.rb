@@ -38,6 +38,11 @@ Given /^I create an annotation$/ do
   @normalform.draw_annotation
 end
 
+Given /^I create an label$/ do
+  @normalform.draw_label
+end
+
+
 Given /^I create rectangle and place (\d+) intersecting lines on it$/ do |arg1|
   @normalform.draw_foursquare
 end
