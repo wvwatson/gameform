@@ -22,19 +22,46 @@ class NormalForm
   # 
   # # draw a line
   # convert -size 100x60 xc:skyblue -fill white -stroke black -draw "line   20,50 90,10" draw_line.gif
-  def draw_line(location=File.dirname(__FILE__) + "/../examples/")
-		canvas = Magick::Image.new(240, 300,
-								Magick::HatchFill.new('white','lightcyan2'))
+  def draw_line(canvas = Magick::Image.new(240, 300,
+                            Magick::HatchFill.new('white','lightcyan2')),
+                   args={first_x: 20,
+                     first_y: 50,
+                     second_x: 90,
+                     second_y: 10},
+                     location=File.dirname(__FILE__) + "/../examples/")
+                   
+        
+       myline = Magick::Draw.new
+        myline.fill('white')
+       myline.stroke('black')
+       myline.line args[:first_x], args[:first_y], args[:second_x],args[:second_y]
+       myline.draw(canvas)
+       canvas.write(location + 'line.gif')
+      
+      end
 	
-    myline = Magick::Draw.new
-		myline.fill('white')
-    myline.stroke('black')
-    myline.line 20, 50, 90,10
-    myline.draw(canvas)
-    canvas.write(location + 'line.gif')
-	
-	end
-	
+  # def draw_line2(mycanvas, options = {})
+ 		          # mycanvas = Magick::Image.new(240, 300,
+ 		         #                           Magick::HatchFill.new('white','lightcyan2'))
+ 		         #                  options={first_x: 20,
+ 		         #                    first_y: 50,
+ 		         #                    second_x: 90,
+ 		         #                    second_y: 10,
+ 		         #                    location: File.dirname(__FILE__) + "/../examples/"}
+
+                 # location=
+ 		# canvas = Magick::Image.new(240, 300,
+ 		#                 Magick::HatchFill.new('white','lightcyan2'))
+
+  #      myline = Magick::Draw.new
+  #   myline.fill('white')
+  #      myline.stroke('black')
+  #      myline.line options[:first_x], options[:first_y], options[:second_x], options[:second_y]
+  #      myline.draw(canvas)
+  #      mycanvas.write(options[:location] + 'line.gif')
+  # 
+  # end
+
 	# convert -size 100x60 xc:skyblue -fill white -stroke black -font Candice -pointsize 40 -gravity center -draw "text 0,0 'Hello'"  draw_text.gif
 	def draw_annotation(location=File.dirname(__FILE__) + "/../examples/")
     # canvas = Magick::Image.new(240, 300,
@@ -47,8 +74,8 @@ class NormalForm
     myannotation = Magick::Draw.new
 		myannotation.fill('black')
     myannotation.stroke('black')
-    myannotation.font "Arial"
-    myannotation.pointsize 25
+    myannotation.font "Courier-New-Regular"
+    myannotation.pointsize 24
     myannotation.gravity Magick::CenterGravity
     myannotation.text 0, 0, 'Hello'
     myannotation.draw(canvas)
@@ -108,26 +135,50 @@ class NormalForm
     
   end
  
+ 
+  # def some_method (thing, options)
+  #   options.reverse_merge!({:key1 => 'default'})
+  #    puts thing
+  #    puts options
+  # end
   def draw_annotated_game(location=File.dirname(__FILE__) + "/../examples/")
     
     canvas_coordinates={}
     canvas_coordinates[:width]=240
     canvas_coordinates[:height]=300
     
+    canvas = Magick::Image.new(canvas_coordinates[:width], 
+                              canvas_coordinates[:height],
+                              Magick::HatchFill.new('white','lightcyan2'))
+    
     topleft_adjustment = 50
     bottomright_adjustment = 140
     rectangle_coordinates={}
+    
+    # rip out the line drawing
+    
     rectangle_coordinates[:first_horizontal]=20 + topleft_adjustment
+    # First_vert = first_horiz/2
     rectangle_coordinates[:first_vertical]=10 + topleft_adjustment
     rectangle_coordinates[:second_horizontal]=80 + bottomright_adjustment
+    # second_vert = second_horiz *.625
     rectangle_coordinates[:second_vertical]=50 + bottomright_adjustment
+     #     
+     vertical_line={}
+        vertical_line[:first_vertical]=rectangle_coordinates[:first_vertical]
+        vertical_line[:first_horizontal] = (rectangle_coordinates[:first_horizontal]+
+          rectangle_coordinates[:second_horizontal])/2
+        vertical_line[:second_vertical]=rectangle_coordinates[:second_vertical]
+        vertical_line[:second_horizontal]=vertical_line[:first_horizontal]
     
-    vertical_line={}
-    vertical_line[:first_vertical]=rectangle_coordinates[:first_vertical]
-    vertical_line[:first_horizontal] = (rectangle_coordinates[:first_horizontal]+
-      rectangle_coordinates[:second_horizontal])/2
-    vertical_line[:second_vertical]=rectangle_coordinates[:second_vertical]
-    vertical_line[:second_horizontal]=vertical_line[:first_horizontal]
+    # debugger
+    draw_line canvas, {first_x: vertical_line[:first_horizontal],
+                   first_y: vertical_line[:first_vertical],
+                   second_x: vertical_line[:second_horizontal],
+                   second_y: vertical_line[:second_vertical]}
+    # draw_line canvas, {first_x: vertical_line[:first_horizontal], first_y: vertical_line[:first_vertical], second_x: vertical_line[:second_horizontal],  second_y: vertical_line[:second_vertical]}
+    # debugger
+    # draw_line canvas, {first_x: 20, first_y: 10, second_x: 80, second_y: 50}
     
     horizontal_line={}
     horizontal_line[:first_vertical]=(rectangle_coordinates[:first_vertical]+
@@ -137,40 +188,67 @@ class NormalForm
     horizontal_line[:second_vertical]=horizontal_line[:first_vertical]
     horizontal_line[:second_horizontal]=rectangle_coordinates[:second_horizontal]
     
-      
-    canvas = Magick::Image.new(canvas_coordinates[:width], 
-                              canvas_coordinates[:height],
-                              Magick::HatchFill.new('white','lightcyan2'))
+    draw_line canvas, {first_x: horizontal_line[:first_horizontal],
+                   first_y: horizontal_line[:first_vertical],
+                   second_x: horizontal_line[:second_horizontal],
+                   second_y: horizontal_line[:second_vertical]}
     
     myfoursquare = Magick::Draw.new
-  	myfoursquare.fill('white')
+  	myfoursquare.fill('none')
     myfoursquare.stroke('black')
     myfoursquare.rectangle rectangle_coordinates[:first_horizontal], 
                            rectangle_coordinates[:first_vertical], 
                            rectangle_coordinates[:second_horizontal], 
                            rectangle_coordinates[:second_vertical]
-    myfoursquare.line vertical_line[:first_horizontal], 
-                      vertical_line[:first_vertical], 
-                      vertical_line[:second_horizontal], 
-                      vertical_line[:second_vertical]                      
-    myfoursquare.line horizontal_line[:first_horizontal], 
-                           horizontal_line[:first_vertical], 
-                           horizontal_line[:second_horizontal], 
-                           horizontal_line[:second_vertical] 
+    # myfoursquare.line vertical_line[:first_horizontal], 
+    #                    vertical_line[:first_vertical], 
+    #                    vertical_line[:second_horizontal], 
+    #                    vertical_line[:second_vertical]                      
+    # myfoursquare.line horizontal_line[:first_horizontal], 
+    #                         horizontal_line[:first_vertical], 
+    #                         horizontal_line[:second_horizontal], 
+    #                         horizontal_line[:second_vertical] 
     # myfoursquare.annotate canvas, 100, 100, 20, 50, "Football"
-  
+    #20 10 80 50
+    # need to figure out the total pointsize of the text
+    # maybe pointsize * size of text?
+    strategy_label= "Football" 
+
     text_coordinates = {}  
     text_coordinates[:pointsize] = 15
-    text_coordinates[:text_vertical] = 90
-    text_coordinates[:text_horizontal] = 20
-    
+    # there is no way strategy size is 120 *and* size of rectangle is 130
+    strategy_size= text_coordinates[:pointsize] * strategy_label.size
+    # was 90
+    # rotated text should *end* at 1/2 of 1/2 the length of the box 
+    # and a little higher horizontally
+    # this means rotated text should *start* at 
+    # label_size - (1/2 of 1/2 of horizontal length) * 1/2 of label size
+    # (because of 45 degree rotation)
+    # and vertically 1/2 label_size higher than horizontal
+    # debugger
+    horizontal_length = rectangle_coordinates[:second_horizontal] - 
+                          rectangle_coordinates[:first_horizontal]
+    text_rotated_vertical_length = strategy_size - ((0.25 * strategy_size) + 
+                                        (0.50 * strategy_size))
+    text_coordinates[:text_vertical] = rectangle_coordinates[:first_vertical] - 
+                                        text_rotated_vertical_length
+                                        
+    text_rotated_horizontal_length = (0.50 * strategy_size) 
+    # was 20                        
+    text_coordinates[:text_horizontal] = text_rotated_horizontal_length + 
+                                        rectangle_coordinates[:first_horizontal]
     text = Magick::Draw.new
-    text.font_family = 'tohama'
-    text.pointsize = text_coordinates[:pointsize]
+    text.font "Courier-New-Regular"
+    text.pointsize = 15
+    # text.pointsize = text_coordinates[:pointsize]
     # text.gravity = Magick::CenterGravity
     
-    text.annotate(canvas, 0,0,text_coordinates[:text_vertical],
-                          text_coordinates[:text_horizontal], "Football") {
+    text.annotate(canvas, 0,0,text_coordinates[:text_horizontal],
+                            text_coordinates[:text_vertical],
+                             # strategy_label
+                             "WWWW"
+                             ) {
+       self.font "Courier-New-Regular"
        self.fill = 'gray40'
        self.rotation = 45
     }
@@ -196,6 +274,8 @@ class NormalForm
       #     canvas.write(location + 'annotation.gif')
     
   end
+  
+  
   def lolcat
 
     img = ImageList.new('public/computer-cat.jpg')
