@@ -32,7 +32,7 @@ Feature: Build a game
   Scenario: Make a game with annotations
     Given I create a game with annotations on it
 	Then I should have a file named "annotatedgame.gif"
-		
+	
   Scenario: Add a player
     Given I have a player named "Sarah"
 	And I have a player named "Larry"

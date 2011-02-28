@@ -91,20 +91,49 @@ class NormalForm
     # canvas = Magick::Image.new(240, 300,
     #                 Magick::HatchFill.new('white','lightcyan2'))
     
-	  canvas = Magick::Image.new(90, 20) do
-        self.background_color = 'white' # change this to none later
+	  canvas = Magick::Image.new(150, 50) do
+		    # self.fill='grey' 
+				# debugger
+				# self.stroke='black'
+				# self.font='Courier-New'
+				# mylabel.pointsize 15
+				# self.gravity=Magick::EastGravity
+        self.background_color = 'none' # change this to none later
+				# self.label='Football'
     end
   
-    mylabel = Magick::Draw.new
-		mylabel.fill('grey')
-    mylabel.stroke('black')
-    mylabel.font "Courier"
-    mylabel.pointsize 15
-    mylabel.gravity Magick::EastGravity
+    # mylabel = Magick::Draw.new do
+				# debugger
+				# self.stroke='black'
+				# self.font='Courier-New'
+				# mylabel.pointsize 15
+				# self.gravity=Magick::EastGravity
+        # self.background_color = 'none' # change this to none later
+				# self.label='Football'
+		# end
+		# mylabel.fill('grey')
+    # mylabel.stroke('black')
+    # mylabel.font 'Courier-New'
+    # mylabel.pointsize 15
+    # mylabel.gravity Magick::EastGravity
     # debugger
-    mylabel.text 0,0, 'Football'
-    mylabel.draw(canvas)
+    # mylabel.text 0,0, 'Football'
+    # mylabel.draw(canvas)
     # canvas.rotate!(45)
+		
+	 the_text = "Football"
+   label = Magick::Draw.new
+   label.font = "Courier-New" 
+   label.text_antialias(true)
+   label.font_style=Magick::NormalStyle
+   label.font_weight=Magick::BoldWeight
+   label.gravity=Magick::CenterGravity
+   label.text(0,0,the_text)
+   metrics = label.get_type_metrics(the_text)
+   width = metrics.width
+   height = metrics.height
+		# debugger
+		label.draw(canvas)
     canvas.write(location + 'label.gif')
   end
 
