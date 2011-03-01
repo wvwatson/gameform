@@ -100,7 +100,7 @@ class NormalForm
 		
    # label_text = "Football"
    label = Magick::Draw.new
-   label.font = "Courier" # use courier-new for windows and courier for mac
+   label.font = "Courier-New" # use courier-new for windows and courier for mac
    label.text_antialias(true)
    label.font_style=Magick::NormalStyle
    label.font_weight=Magick::BoldWeight
@@ -279,15 +279,18 @@ class NormalForm
     # I guess annotate is supposed to have height/width as well ...
     # looks like I'm supposed to use a label, size it, have it 'best fit',
     # then compose that labels canvas onto images canvas I want
-    
+    debugger
     width, height, label_canvas = draw_label
-    text.annotate(canvas, 0,0,text_coordinates[:text_horizontal],
-                            text_coordinates[:text_vertical],
-                             strategy_label) {
-       self.font "Courier-New-Regular"
-       self.fill = 'gray40'
-       self.rotation = 45
-    }
+		canvas.composite!(label_canvas, text_coordinates[:text_horizontal],
+																		text_coordinates[:text_vertical],
+																		Magick::OverCompositeOp)
+    # text.annotate(canvas, 0,0,text_coordinates[:text_horizontal],
+                            # text_coordinates[:text_vertical],
+                             # strategy_label) {
+       # self.font "Courier-New-Regular"
+       # self.fill = 'gray40'
+       # self.rotation = 45
+    # }
     
     
     
@@ -310,6 +313,7 @@ class NormalForm
       #     canvas.write(location + 'annotation.gif')
     
   end
+ 
   def lolcat
 
     img = ImageList.new('public/computer-cat.jpg')
