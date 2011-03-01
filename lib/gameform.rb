@@ -87,54 +87,32 @@ class NormalForm
   # $label=Image::Magick->new(size=>"600x600");
   # $label->Read("label:testing");
   # $label->Write("test.png");
-	def draw_label(location=File.dirname(__FILE__) + "/../examples/")
-    # canvas = Magick::Image.new(240, 300,
-    #                 Magick::HatchFill.new('white','lightcyan2'))
+	def draw_label(label_text='Football',
+                   args={width: 100,
+                     height: 15},
+                     location=File.dirname(__FILE__) + "/../examples/")  
     
-	  canvas = Magick::Image.new(150, 50) do
-		    # self.fill='grey' 
-				# debugger
-				# self.stroke='black'
-				# self.font='Courier-New'
-				# mylabel.pointsize 15
-				# self.gravity=Magick::EastGravity
-        self.background_color = 'none' # change this to none later
-				# self.label='Football'
+    
+                  
+	  strategy_canvas = Magick::Image.new(args[:width], args[:height]) do
+        self.background_color = 'white' # change this to none later
     end
-  
-    # mylabel = Magick::Draw.new do
-				# debugger
-				# self.stroke='black'
-				# self.font='Courier-New'
-				# mylabel.pointsize 15
-				# self.gravity=Magick::EastGravity
-        # self.background_color = 'none' # change this to none later
-				# self.label='Football'
-		# end
-		# mylabel.fill('grey')
-    # mylabel.stroke('black')
-    # mylabel.font 'Courier-New'
-    # mylabel.pointsize 15
-    # mylabel.gravity Magick::EastGravity
-    # debugger
-    # mylabel.text 0,0, 'Football'
-    # mylabel.draw(canvas)
-    # canvas.rotate!(45)
 		
-	 the_text = "Football"
+   # label_text = "Football"
    label = Magick::Draw.new
-   label.font = "Courier-New" 
+   label.font = "Courier" # use courier-new for windows and courier for mac
    label.text_antialias(true)
    label.font_style=Magick::NormalStyle
    label.font_weight=Magick::BoldWeight
-   label.gravity=Magick::CenterGravity
-   label.text(0,0,the_text)
-   metrics = label.get_type_metrics(the_text)
+   label.gravity=Magick::EastGravity
+   label.text(0,0,label_text)
+   metrics = label.get_type_metrics(label_text)
    width = metrics.width
    height = metrics.height
-		# debugger
-		label.draw(canvas)
-    canvas.write(location + 'label.gif')
+    # debugger
+  	label.draw(strategy_canvas)
+  	strategy_canvas.write(location + 'label.gif')
+    [width, height, strategy_canvas]
   end
 
   def draw_foursquare(location=File.dirname(__FILE__) + "/../examples/")
@@ -301,11 +279,11 @@ class NormalForm
     # I guess annotate is supposed to have height/width as well ...
     # looks like I'm supposed to use a label, size it, have it 'best fit',
     # then compose that labels canvas onto images canvas I want
+    
+    width, height, label_canvas = draw_label
     text.annotate(canvas, 0,0,text_coordinates[:text_horizontal],
                             text_coordinates[:text_vertical],
-                             strategy_label
-                             #"WWWW"
-                             ) {
+                             strategy_label) {
        self.font "Courier-New-Regular"
        self.fill = 'gray40'
        self.rotation = 45
