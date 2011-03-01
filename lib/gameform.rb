@@ -87,7 +87,7 @@ class NormalForm
   # $label=Image::Magick->new(size=>"600x600");
   # $label->Read("label:testing");
   # $label->Write("test.png");
-	def draw_label(label_text='Football',
+	def draw_label_image(label_text='Football',
                    args={width: 100,
                      height: 15},
                      location=File.dirname(__FILE__) + "/../examples/")  
@@ -98,22 +98,37 @@ class NormalForm
     end
 		
    # label_text = "Football"
-   label = Magick::Draw.new
-   label.font = "Courier-New" # use courier-new for windows and courier for mac
-   label.text_antialias(true)
-   label.font_style=Magick::NormalStyle
-   label.font_weight=Magick::BoldWeight
-   label.gravity=Magick::EastGravity
-   label.text(0,0,label_text)
-   metrics = label.get_type_metrics(label_text)
-   width = metrics.width
-   height = metrics.height
+   # label = Magick::Draw.new
+   # label.font = "Courier-New" # use courier-new for windows and courier for mac
+   # label.text_antialias(true)
+   # label.font_style=Magick::NormalStyle
+   # label.font_weight=Magick::BoldWeight
+   # label.gravity=Magick::EastGravity
+   # label.text(0,0,label_text)
+   # metrics = label.get_type_metrics(label_text)
+   # width = metrics.width
+   # height = metrics.height
     # debugger
+		width, height, label = draw_label label_text
   	label.draw(strategy_canvas)
   	strategy_canvas.write(location + 'label.gif')
     [width, height, strategy_canvas]
   end
 
+	def draw_label(label_text='Football')  
+    label = Magick::Draw.new
+    label.font = "Courier-New" # use courier-new for windows and courier for mac
+    label.text_antialias(true)
+    label.font_style=Magick::NormalStyle
+    label.font_weight=Magick::BoldWeight
+    label.gravity=Magick::EastGravity
+    label.text(0,0,label_text)
+    metrics = label.get_type_metrics(label_text)
+    width = metrics.width
+    height = metrics.height
+    # debugger
+    [width, height, label]
+  end
   def draw_foursquare(location=File.dirname(__FILE__) + "/../examples/")
     
     canvas_coordinates={}
@@ -244,12 +259,19 @@ class NormalForm
     # need to figure out the total pointsize of the text
     # maybe pointsize * size of text?
 		#replace this is draw label
-    strategy_label= "Football" 
-
+    # strategy_label= "Football" 
+    debugger
+		# have to draw and then redraw to get length
+		label_width, label_height = draw_label "Football"
+    label_width, label_height, label_canvas = 
+						draw_label_image "Football", width: label_width, height: label_height
+		label_canvas= label_canvas.rotate 45
+		
     text_coordinates = {}  
     text_coordinates[:pointsize] = 15
     # there is no way strategy size is 120 *and* size of rectangle is 130
-    strategy_size= text_coordinates[:pointsize] * strategy_label.size
+    # strategy_size= text_coordinates[:pointsize] * strategy_label.size
+		strategy_size= label_width
     # was 90
     # rotated text should *end* at 1/2 of 1/2 the length of the box 
     # and a little higher horizontally
@@ -258,20 +280,32 @@ class NormalForm
     # (because of 45 degree rotation)
     # and vertically 1/2 label_size higher than horizontal
     # debugger
-    horizontal_length = rectangle_coordinates[:second_horizontal] - 
+		# calc lengths and then add horiz and vert offsets
+    rectangle_length = rectangle_coordinates[:second_horizontal] - 
                           rectangle_coordinates[:first_horizontal]
-    text_rotated_vertical_length = strategy_size - ((0.25 * strategy_size) + 
-                                        (0.50 * strategy_size))
+		# vertical size of 45 degrees rotated text is 1/2 size of text
+		#   plus 1/2 height of text.
+		label_buffer = 15
+    text_rotated_vertical_offset_from_center = 
+						(0.50 * strategy_size) + (0.50 * label_height) + label_buffer
+						#strategy_size - ((0.25 * strategy_size) + (0.50 * strategy_size))
     text_coordinates[:text_vertical] = rectangle_coordinates[:first_vertical] - 
-                                        text_rotated_vertical_length
-                                        
-    text_rotated_horizontal_length = (0.50 * strategy_size) 
+                                        text_rotated_vertical_offset_from_center
+    
+		# roated label width = 50% of the width. 
+		# we want to start 1/2 way between one of the strategy columns
+		# that means 50% of 50% (25%) of the column length - the horizontal
+		# start of the column 
+		column length = 0.50 * rectangle_length 
+    text_rotated_horizontal_offset_from_center = (0.50 * strategy_size) -
+																								 (0.50 * rectangle_length) 
+																								
     # was 20                        
-    text_coordinates[:text_horizontal] = text_rotated_horizontal_length + 
+    text_coordinates[:text_horizontal] = text_rotated_horizontal_offset_from_center + 
                                         rectangle_coordinates[:first_horizontal]
-    text = Magick::Draw.new
-    text.font "Courier-New"
-    text.pointsize = 15
+    # text = Magick::Draw.new
+    # text.font "Courier-New"
+    # text.pointsize = 15
     # text.pointsize = text_coordinates[:pointsize]
     # text.gravity = Magick::CenterGravity
     # maybe try to do a fixed length and height of the text (geometry?) and
@@ -279,9 +313,7 @@ class NormalForm
     # I guess annotate is supposed to have height/width as well ...
     # looks like I'm supposed to use a label, size it, have it 'best fit',
     # then compose that labels canvas onto images canvas I want
-    debugger
-    width, height, label_canvas = draw_label
-		label_canvas= label_canvas.rotate 45
+		debugger
 		canvas.composite!(label_canvas, text_coordinates[:text_horizontal],
 																		text_coordinates[:text_vertical],
 																		Magick::OverCompositeOp)
