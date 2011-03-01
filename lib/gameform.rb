@@ -91,8 +91,7 @@ class NormalForm
                    args={width: 100,
                      height: 15},
                      location=File.dirname(__FILE__) + "/../examples/")  
-    
-    
+       
                   
 	  strategy_canvas = Magick::Image.new(args[:width], args[:height]) do
         self.background_color = 'white' # change this to none later
@@ -244,6 +243,7 @@ class NormalForm
     #20 10 80 50
     # need to figure out the total pointsize of the text
     # maybe pointsize * size of text?
+		#replace this is draw label
     strategy_label= "Football" 
 
     text_coordinates = {}  
@@ -281,6 +281,7 @@ class NormalForm
     # then compose that labels canvas onto images canvas I want
     debugger
     width, height, label_canvas = draw_label
+		label_canvas= label_canvas.rotate 45
 		canvas.composite!(label_canvas, text_coordinates[:text_horizontal],
 																		text_coordinates[:text_vertical],
 																		Magick::OverCompositeOp)
