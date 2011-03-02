@@ -51,3 +51,15 @@ Given /^I create a game with annotations on it$/ do
   # @normalform.some_method "26", first_x: 20, first_y: 10, second_x: 80, second_y: 50
   @normalform.draw_annotated_game
 end
+
+Given /^I create a normal game with "([^"]*)" columns and a width of (\d+) and a size of (\d+)$/ do |arg1, arg2, arg3|
+  pending # express the regexp above with the code you wish you had
+end
+
+When /^I get the information on the first column$/ do
+  pending # express the regexp above with the code you wish you had
+end
+
+Then /^the width of the first column should be (\d+)$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end

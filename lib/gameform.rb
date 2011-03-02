@@ -236,7 +236,7 @@ class NormalForm
     # maybe pointsize * size of text?
 		#replace this is draw label
     # strategy_label= "Football" 
-    debugger
+    # debugger
 		# have to draw and then redraw to get length
 		label_width, label_height = draw_label "Football"
     label_width, label_height, label_canvas = 
@@ -267,7 +267,7 @@ class NormalForm
 						#strategy_size - ((0.25 * strategy_size) + (0.50 * strategy_size))
     text_coordinates[:text_vertical] = rectangle_coordinates[:first_vertical] - 
                                         text_rotated_vertical_offset_from_center
-    debugger
+    # debugger
 		# roated label width = 50% of the width. 
 		rotated_strategy_size = 0.50 * strategy_size
 		# we want to start 1/2 way between one of the strategy columns
@@ -290,7 +290,7 @@ class NormalForm
     # I guess annotate is supposed to have height/width as well ...
     # looks like I'm supposed to use a label, size it, have it 'best fit',
     # then compose that labels canvas onto images canvas I want
-		debugger
+		# debugger
 		canvas.composite!(label_canvas, text_coordinates[:text_horizontal],
 																		text_coordinates[:text_vertical],
 																		Magick::OverCompositeOp)

@@ -32,6 +32,12 @@ Feature: Build a game
   Scenario: Make a game with annotations
     Given I create a game with annotations on it
 	Then I should have a file named "annotatedgame.gif"
+
+  @draw
+  Scenario: Get column information for a game
+    Given I create a normal game with "2" columns and a width of 240 and a size of 300
+	When I get the information on the first column
+	Then the width of the first column should be 120
 	
   Scenario: Add a player
     Given I have a player named "Sarah"
