@@ -31,37 +31,15 @@ class NormalForm
                      location=File.dirname(__FILE__) + "/../examples/")
                    
         
-       myline = Magick::Draw.new
-        myline.fill('white')
-       myline.stroke('black')
-       myline.line args[:first_x], args[:first_y], args[:second_x],args[:second_y]
-       myline.draw(canvas)
-       canvas.write(location + 'line.gif')
+    myline = Magick::Draw.new
+    myline.fill('white')
+    myline.stroke('black')
+    myline.line args[:first_x], args[:first_y], args[:second_x],args[:second_y]
+    myline.draw(canvas)
+    canvas.write(location + 'line.gif')
       
-      end
+  end
 	
-  # def draw_line2(mycanvas, options = {})
- 		          # mycanvas = Magick::Image.new(240, 300,
- 		         #                           Magick::HatchFill.new('white','lightcyan2'))
- 		         #                  options={first_x: 20,
- 		         #                    first_y: 50,
- 		         #                    second_x: 90,
- 		         #                    second_y: 10,
- 		         #                    location: File.dirname(__FILE__) + "/../examples/"}
-
-                 # location=
- 		# canvas = Magick::Image.new(240, 300,
- 		#                 Magick::HatchFill.new('white','lightcyan2'))
-
-  #      myline = Magick::Draw.new
-  #   myline.fill('white')
-  #      myline.stroke('black')
-  #      myline.line options[:first_x], options[:first_y], options[:second_x], options[:second_y]
-  #      myline.draw(canvas)
-  #      mycanvas.write(options[:location] + 'line.gif')
-  # 
-  # end
-
 	# convert -size 100x60 xc:skyblue -fill white -stroke black -font Candice -pointsize 40 -gravity center -draw "text 0,0 'Hello'"  draw_text.gif
 	def draw_annotation(location=File.dirname(__FILE__) + "/../examples/")
     # canvas = Magick::Image.new(240, 300,
@@ -83,10 +61,6 @@ class NormalForm
     canvas.write(location + 'annotation.gif')
   end
 
-  # perl example
-  # $label=Image::Magick->new(size=>"600x600");
-  # $label->Read("label:testing");
-  # $label->Write("test.png");
 	def draw_label_image(label_text='Football',
                    args={width: 100,
                      height: 15},
@@ -117,7 +91,7 @@ class NormalForm
 
 	def draw_label(label_text='Football')  
     label = Magick::Draw.new
-    label.font = "Courier-New" # use courier-new for windows and courier for mac
+    label.font = "Courier" # use courier-new for windows and courier for mac
     label.text_antialias(true)
     label.font_style=Magick::NormalStyle
     label.font_weight=Magick::BoldWeight
@@ -129,6 +103,7 @@ class NormalForm
     # debugger
     [width, height, label]
   end
+  
   def draw_foursquare(location=File.dirname(__FILE__) + "/../examples/")
     
     canvas_coordinates={}
@@ -285,24 +260,25 @@ class NormalForm
                           rectangle_coordinates[:first_horizontal]
 		# vertical size of 45 degrees rotated text is 1/2 size of text
 		#   plus 1/2 height of text.
-		label_buffer = 15
+		label_buffer = 10
     text_rotated_vertical_offset_from_center = 
 						(0.50 * strategy_size) + (0.50 * label_height) + label_buffer
 						#strategy_size - ((0.25 * strategy_size) + (0.50 * strategy_size))
     text_coordinates[:text_vertical] = rectangle_coordinates[:first_vertical] - 
                                         text_rotated_vertical_offset_from_center
-    
+    debugger
 		# roated label width = 50% of the width. 
+		rotated_strategy_size = 0.50 * strategy_size
 		# we want to start 1/2 way between one of the strategy columns
 		# that means 50% of 50% (25%) of the column length - the horizontal
 		# start of the column 
-		column length = 0.50 * rectangle_length 
-    text_rotated_horizontal_offset_from_center = (0.50 * strategy_size) -
-																								 (0.50 * rectangle_length) 
+    column_length = 0.50 * rectangle_length # only two columns right now 
+    center_column_offset = 0.50 * column_length
+    text_rotated_horizontal_offset_from_center = rectangle_coordinates[:first_horizontal] +
+                          center_column_offset - rotated_strategy_size
 																								
     # was 20                        
-    text_coordinates[:text_horizontal] = text_rotated_horizontal_offset_from_center + 
-                                        rectangle_coordinates[:first_horizontal]
+    text_coordinates[:text_horizontal] = text_rotated_horizontal_offset_from_center 
     # text = Magick::Draw.new
     # text.font "Courier-New"
     # text.pointsize = 15
