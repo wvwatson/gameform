@@ -68,7 +68,7 @@ class NormalForm
        
                   
 	  strategy_canvas = Magick::Image.new(args[:width], args[:height]) do
-        self.background_color = 'white' # change this to none later
+        self.background_color = 'none' # change this to none later
     end
 		
    # label_text = "Football"
@@ -91,7 +91,7 @@ class NormalForm
 
 	def draw_label(label_text='Football')  
     label = Magick::Draw.new
-    label.font = "Courier" # use courier-new for windows and courier for mac
+    label.font = "Courier-New" # use courier-new for windows and courier for mac
     label.text_antialias(true)
     label.font_style=Magick::NormalStyle
     label.font_weight=Magick::BoldWeight
@@ -168,6 +168,7 @@ class NormalForm
     canvas_coordinates[:width]=240
     canvas_coordinates[:height]=300
     
+		# TODO: take grid out when done
     canvas = Magick::Image.new(canvas_coordinates[:width], 
                               canvas_coordinates[:height],
                               Magick::HatchFill.new('white','lightcyan2'))
