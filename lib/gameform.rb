@@ -345,6 +345,17 @@ class NormalForm
                                               first_vertical: 60,
                                               second_horizontal: 220,
                                               second_vertical: 190})
+                                              
+    # get rectangle width/height
+    # get offset (rectange width/height - respective coordinates)
+    # get proportionate columns/rows
+    # use fractions and right-most/bottom-most side as the whole
+    # e.g for a rectange with three columns the right-most side would be 3/3
+    # of the rectangle width while the first and second columns would be 
+    # 1/3 and 2/3 of the recangle width, respectively
+    # of course all columns should be equal width and height, so after calculating
+    # just one you should have all, and then just use the offset * column number
+    # to get the coordinates                                          
     game_info = {}                            
     game_info[:rectangle_length] = rectangle_coordinates[:second_horizontal] - 
                           rectangle_coordinates[:first_horizontal]  
@@ -376,8 +387,8 @@ class NormalForm
     column_infos||=[]
     column_info = {}
     vertical_lines.each do |line|
-      if column_infos.count == 0 
-        column_info[:begin] = rectangle_coordinates[:first_horizontal]
+
+'/;'        column_info[:begin] = rectangle_coordinates[:first_horizontal]
       else
         column_info[:begin] = column_infos.last[:end]
       end
