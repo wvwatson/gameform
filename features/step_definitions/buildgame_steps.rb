@@ -1,3 +1,8 @@
+Before do
+  @normalform = NormalForm.new
+  @game_info = {}
+end
+
 Given /^I have a player named "([^"]*)"$/ do |arg1|
   pending # express the regexp above with the code you wish you had
 end
@@ -14,9 +19,6 @@ Then /^the number of tactics should be (\d+)$/ do |arg1|
   pending # express the regexp above with the code you wish you had
 end
 
-Before do
-  @normalform = NormalForm.new
-end
 Given /^I want a game form$/ do
   pending # express the regexp above with the code you wish you had
 end
@@ -52,8 +54,9 @@ Given /^I create a game with annotations on it$/ do
   @normalform.draw_annotated_game
 end
 
-Given /^I create a normal game with "([^"]*)" columns and a width of (\d+) and a size of (\d+)$/ do |arg1, arg2, arg3|
-  pending # express the regexp above with the code you wish you had
+Given /^I create a normal game with "([^"]*)" columns and "([^"]*)" rows and a width of (\d+) and a size of (\d+)$/ do |arg1, arg2, arg3, arg4|
+  @game_info = @normalform.draw_game(arg1.to_i, arg2.to_i, {width: arg3.to_i,
+                                                            height: arg4.to_i} )
 end
 
 When /^I get the information on the first column$/ do

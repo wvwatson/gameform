@@ -35,7 +35,7 @@ Feature: Build a game
 
   @draw
   Scenario: Get column information for a game
-    Given I create a normal game with "2" columns and a width of 240 and a size of 300
+    Given I create a normal game with "2" columns and "2" rows and a width of 240 and a size of 300
 	When I get the information on the first column
 	Then the width of the first column should be 120
 	

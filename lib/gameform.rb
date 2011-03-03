@@ -324,12 +324,81 @@ class NormalForm
     
   end
  
-  def draw_game(column=2,
+  def draw_game(column=2, rows=2,
                    args={width: 240,
                      height: 300},
                      location=File.dirname(__FILE__) + "/../examples/")
-    
+                     
+     canvas = Magick::Image.new(args[:width], 
+                                 args[:height],
+                                 Magick::HatchFill.new('white','lightcyan2'))
+     debugger                           
+     game_info = get_coordinates(2,2, {first_horizontal: 70,
+                                        first_vertical: 60,
+                                        second_horizontal: 220,
+                                        second_vertical: 190} )
+     puts 'draw_game'                                    
   end
+  
+  def get_coordinates(columns=2, rows=2,
+                        rectangle_coordinates={first_horizontal: 70,
+                                              first_vertical: 60,
+                                              second_horizontal: 220,
+                                              second_vertical: 190})
+    game_info = {}                            
+    game_info[:rectangle_length] = rectangle_coordinates[:second_horizontal] - 
+                          rectangle_coordinates[:first_horizontal]  
+    game_info[:rectangle_height] = rectangle_coordinates[:second_vertical] - 
+                          rectangle_coordinates[:first_vertical]  
+                           
+    vertical_lines ||=[]                                     
+    vertical_line={}
+    vertical_line[:first_vertical]=rectangle_coordinates[:first_vertical]
+    vertical_line[:first_horizontal] = (rectangle_coordinates[:first_horizontal]+
+                                      rectangle_coordinates[:second_horizontal])/2
+    vertical_line[:second_vertical]=rectangle_coordinates[:second_vertical]
+    vertical_line[:second_horizontal]=vertical_line[:first_horizontal]
+    vertical_lines.push vertical_line  
+ 
+    horizontal_lines ||=[]          
+    horizontal_line={}
+    horizontal_line[:first_vertical]=(rectangle_coordinates[:first_vertical]+
+                                      rectangle_coordinates[:second_vertical])/2
+
+    horizontal_line[:first_horizontal] = rectangle_coordinates[:first_horizontal]
+    horizontal_line[:second_vertical]=horizontal_line[:first_vertical]
+    horizontal_line[:second_horizontal]=rectangle_coordinates[:second_horizontal] 
+    horizontal_lines.push horizontal_line
+        
+    game_info[:vertical_lines]=vertical_lines 
+    # get the info for the column just before a vertical line and just before the right side
+    # of the rectangle
+    column_infos||=[]
+    column_info = {}
+    vertical_lines.each do |line|
+      if column_infos.count == 0 
+        column_info[:begin] = rectangle_coordinates[:first_horizontal]
+      else
+        column_info[:begin] = column_infos.last[:end]
+      end
+      column_info[:end]=line[:first_horizontal]
+      column_infos.push column_info
+    end
+    # add column info for the last line (right side)
+    if column_infos == 0
+      column_info[:begin] = rectangle_coordinates[:first_horizontal]
+    else
+      column_info[:begin] = column_infos.last[:end]
+    end
+    column_info[:end]= rectangle_coordinates[:second_horizontal]
+    column_infos.push column_info
+      
+    game_info[:horizontal_lines]=horizontal_lines
+    # get the info for the column just above a horizontal line and just above the bottom 
+    # of the rectangle
+    game_info                                     
+  end
+  
   def lolcat
 
     img = ImageList.new('public/computer-cat.jpg')
