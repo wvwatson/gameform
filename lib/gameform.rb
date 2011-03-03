@@ -375,7 +375,6 @@ class NormalForm
     horizontal_line={}
     horizontal_line[:first_vertical]=(rectangle_coordinates[:first_vertical]+
                                       rectangle_coordinates[:second_vertical])/2
-
     horizontal_line[:first_horizontal] = rectangle_coordinates[:first_horizontal]
     horizontal_line[:second_vertical]=horizontal_line[:first_vertical]
     horizontal_line[:second_horizontal]=rectangle_coordinates[:second_horizontal] 
@@ -407,7 +406,9 @@ class NormalForm
     column_infos.push column_info
       
     game_info[:horizontal_lines]=horizontal_lines
-    # get the info for the column just above a horizontal line and just above the bottom 
+    # add row code here
+    # maybe make a get_row_info function
+    # get the info for the row just above a horizontal line and just above the bottom 
     # of the rectangle
     game_info[:columns]=column_infos
     game_info                                     
