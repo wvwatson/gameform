@@ -54,15 +54,12 @@ Given /^I create a game with annotations on it$/ do
   @normalform.draw_annotated_game
 end
 
-Given /^I create a normal game with "([^"]*)" columns and "([^"]*)" rows and a width of (\d+) and a size of (\d+)$/ do |arg1, arg2, arg3, arg4|
+Given /^I create a normal game with "([^"]*)" columns and "([^"]*)" rows and a width of (\d+) and a height of (\d+)$/ do |arg1, arg2, arg3, arg4|
   @game_info = @normalform.draw_game(arg1.to_i, arg2.to_i, {width: arg3.to_i,
                                                             height: arg4.to_i} )
 end
 
-When /^I get the information on the first column$/ do
-  pending # express the regexp above with the code you wish you had
-end
-
 Then /^the width of the first column should be (\d+)$/ do |arg1|
-  pending # express the regexp above with the code you wish you had
+  # debugger
+  @game_info[:columns][0][:width].should == arg1.to_i
 end

@@ -257,7 +257,8 @@ class NormalForm
     # and vertically 1/2 label_size higher than horizontal
     # debugger
 		# calc lengths and then add horiz and vert offsets
-    rectangle_length = rectangle_coordinates[:second_horizontal] - 
+    # debugger
+    rectangle_width = rectangle_coordinates[:second_horizontal] - 
                           rectangle_coordinates[:first_horizontal]
 		# vertical size of 45 degrees rotated text is 1/2 size of text
 		#   plus 1/2 height of text.
@@ -273,7 +274,7 @@ class NormalForm
 		# we want to start 1/2 way between one of the strategy columns
 		# that means 50% of 50% (25%) of the column length - the horizontal
 		# start of the column 
-    column_length = 0.50 * rectangle_length # only two columns right now 
+    column_length = 0.50 * rectangle_width # only two columns right now 
     center_column_offset = 0.50 * column_length
     text_rotated_horizontal_offset_from_center = rectangle_coordinates[:first_horizontal] +
                           center_column_offset - rotated_strategy_size
@@ -332,12 +333,11 @@ class NormalForm
      canvas = Magick::Image.new(args[:width], 
                                  args[:height],
                                  Magick::HatchFill.new('white','lightcyan2'))
-     debugger                           
+     # debugger                           
      game_info = get_coordinates(2,2, {first_horizontal: 70,
                                         first_vertical: 60,
                                         second_horizontal: 220,
-                                        second_vertical: 190} )
-     puts 'draw_game'                                    
+                                        second_vertical: 190} )                                  
   end
   
   def get_coordinates(columns=2, rows=2,
@@ -357,7 +357,7 @@ class NormalForm
     # just one you should have all, and then just use the offset * column number
     # to get the coordinates                                          
     game_info = {}                            
-    game_info[:rectangle_length] = rectangle_coordinates[:second_horizontal] - 
+    game_info[:rectangle_width] = rectangle_coordinates[:second_horizontal] - 
                           rectangle_coordinates[:first_horizontal]  
     game_info[:rectangle_height] = rectangle_coordinates[:second_vertical] - 
                           rectangle_coordinates[:first_vertical]  
@@ -386,9 +386,10 @@ class NormalForm
     # of the rectangle
     column_infos||=[]
     column_info = {}
+    # debugger
     vertical_lines.each do |line|
-
-'/;'        column_info[:begin] = rectangle_coordinates[:first_horizontal]
+      if column_infos.count == 0
+        column_info[:begin] = rectangle_coordinates[:first_horizontal]
       else
         column_info[:begin] = column_infos.last[:end]
       end
@@ -396,17 +397,19 @@ class NormalForm
       column_infos.push column_info
     end
     # add column info for the last line (right side)
-    if column_infos == 0
+    if column_infos.count == 0
       column_info[:begin] = rectangle_coordinates[:first_horizontal]
     else
       column_info[:begin] = column_infos.last[:end]
     end
     column_info[:end]= rectangle_coordinates[:second_horizontal]
+    column_info[:width]= column_info[:end] - column_info[:begin]
     column_infos.push column_info
       
     game_info[:horizontal_lines]=horizontal_lines
     # get the info for the column just above a horizontal line and just above the bottom 
     # of the rectangle
+    game_info[:columns]=column_infos
     game_info                                     
   end
   
