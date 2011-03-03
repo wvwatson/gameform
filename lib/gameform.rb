@@ -426,4 +426,5 @@ class NormalForm
     send_data img.to_blob, :stream => 'false', :filename => 'test.jpg', :type => 'image/jpeg', :disposition => 'inline'
 
 	end
+	
 end
