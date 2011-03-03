@@ -324,6 +324,12 @@ class NormalForm
     
   end
  
+  def draw_game(column=2,
+                   args={width: 240,
+                     height: 300},
+                     location=File.dirname(__FILE__) + "/../examples/")
+    
+  end
   def lolcat
 
     img = ImageList.new('public/computer-cat.jpg')
